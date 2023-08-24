@@ -33,3 +33,6 @@ add_action('plugins_loaded', 'magiz_dash_post_load_textdomain');
 
 // Include files
 require_once(MAGIZ_DASH_POST_DIR . 'public/magiz_user_dashboard_shortcode.php');
+
+require_once(MAGIZ_DASH_POST_DIR . 'admin/magiz_admin_enqueues.php');
+require_once(MAGIZ_DASH_POST_DIR . 'admin/magiz_user_custom_fields.php');
