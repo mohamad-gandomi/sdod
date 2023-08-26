@@ -1,0 +1,63 @@
+/* Block styles */
+.user-cart {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.user-cart__image img {
+    width: 100%;
+    border: 1px solid gainsboro;
+}
+
+.user-cart__info {
+    flex: 1;
+}
+
+.user-cart__name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.user-cart__email {
+    font-size: 18px;
+    color: #666;
+}
+
+.user-cart__days-work,
+.user-cart__distance-travel {
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.user-cart__team-scores {
+margin-top: 14px;
+}
+
+.user-cart__team-score {
+font-size: 18px;
+margin-top: 5px;
+}
+
+/* Modifier styles */
+.user-cart__team-score--a {
+color: blue;
+}
+
+.user-cart__team-score--b {
+color: red;
+}
+
+@media only screen and (min-width: 768px) {
+
+    .user-cart__image {
+        width: 210px;
+        margin-left: 1.3em;
+    }
+
+    .user-cart {
+        flex-direction: row;
+    }
+    
+}
