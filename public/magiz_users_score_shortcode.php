@@ -8,20 +8,32 @@ if (!defined('ABSPATH')) {
 function magiz_display_users_shortcode($atts) {
     ob_start();
 
-    // Query users with the 'mechanic_engineer' and 'electronic_engineer' role
-    $users = get_users(array(
-        'role__in' => array('mechanic_engineer', 'electronic_engineer'),
-    ));
-    
     $current_user = wp_get_current_user();
     $current_user_id = $current_user->ID;
     $current_user_role = $current_user->roles[0] ?? '';
-    
-    if (!empty($users)) {
-        foreach ($users as $user) {
+
+    // Define the number of users to display per page
+    $users_per_page = 20; // Change this to your desired number
+
+    // Get the current page number
+    $current_page = get_query_var('paged') ? get_query_var('paged') : 1;
+
+    // Query users with the 'mechanic_engineer' and 'electronic_engineer' role with pagination
+    $users_query = new WP_User_Query(array(
+        'role__in'   => array('mechanic_engineer', 'electronic_engineer'),
+        'number'     => $users_per_page,
+        'paged'      => $current_page,
+        'exclude'      => array($current_user_id),
+    ));
+
+    // Get the total number of users found
+    $total_users = $users_query->get_total();
+
+    // Loop through the users and display them
+    if (!empty($users_query->results)) {
+        foreach ($users_query->results as $user) {
 
             $user_id = $user->ID;
-            if ($current_user_id == $user_id) continue;
             $user_name = esc_html($user->display_name);
             $user_email = esc_html($user->user_email);
             $mechanic_team_score = get_user_meta($user_id, 'mechanic_team_score', true) ?: [];
@@ -111,6 +123,21 @@ function magiz_display_users_shortcode($atts) {
             <?php
         }
     }
+
+    // Output pagination links
+    if ($total_users > $users_per_page) {
+        echo '<div class="pagination">';
+        echo paginate_links(array(
+            'base'      => get_pagenum_link(1) . '%_%',
+            'format'    => 'page/%#%',
+            'current'   => $current_page,
+            'total'     => ceil($total_users / $users_per_page),
+            'prev_text' => 'صفحه قبل',
+            'next_text' => 'صفحه بعد',
+        ));
+        echo '</div>';
+    }
+
     return ob_get_clean();
 }
 add_shortcode('magiz_display_users', 'magiz_display_users_shortcode');

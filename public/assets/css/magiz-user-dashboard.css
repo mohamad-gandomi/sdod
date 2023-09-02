@@ -62,3 +62,18 @@ color: red;
     }
     
 }
+
+/* Pagination Styles */
+
+.page-numbers {
+    border: 1px solid gray;
+    padding: 0.5em 1.1em;
+    text-decoration: none;
+}
+
+.page-numbers.current {
+    background: #1e73be;
+    border-color: #1e73be;
+    color: white;
+    font-weight: bold;
+}
