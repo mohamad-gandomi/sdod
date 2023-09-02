@@ -40,3 +40,4 @@ require_once(MAGIZ_DASH_POST_DIR . 'public/magiz_users_score_shortcode.php');
 require_once(MAGIZ_DASH_POST_DIR . 'admin/magiz_admin_enqueues.php');
 require_once(MAGIZ_DASH_POST_DIR . 'admin/magiz_user_custom_fields.php');
 require_once(MAGIZ_DASH_POST_DIR . 'admin/magiz_create_user_roles.php');
+require_once(MAGIZ_DASH_POST_DIR . 'admin/magiz_well_post_type.php');
