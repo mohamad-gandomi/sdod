@@ -2,20 +2,43 @@
 
 function magiz_current_user_info_shortcode() {
     if (is_user_logged_in()) {
-        $current_user = wp_get_current_user();
+
+        $user = wp_get_current_user();
+        $user_id = $user->ID;
+        $user_name = esc_html($user->display_name);
+        $user_email = esc_html($user->user_email);
+        $mechanic_team_score = get_user_meta($user_id, 'mechanic_team_score', true) ?: [];
+        $electronic_team_score = get_user_meta($user_id, 'electronic_team_score', true) ?: [];
+        $days_of_work = get_the_author_meta('days_of_work', $user_id) ?: '';
+        $distance_traveled = get_the_author_meta('distance_traveled', $user_id) ?: '';
+        $average_electronic_score = $electronic_team_score ? array_sum($electronic_team_score) / count($electronic_team_score) : '';
+        $average_mechanic_score = $mechanic_team_score ? array_sum($mechanic_team_score) / count($mechanic_team_score) : '';
+        
         ?>
         <div class="user-cart">
             <div class="user-cart__image">
-                <img src="<?php echo get_the_author_meta('profile_image', $current_user->ID) ? get_the_author_meta('profile_image', $current_user->ID) : MAGIZ_DASH_POST_URL . 'admin/assets/images/default-profile-image.jpg' ?>" alt="User Image">
+                <img src="<?php echo get_the_author_meta('profile_image', $user_id) ?: MAGIZ_DASH_POST_URL . 'admin/assets/images/default-profile-image.jpg' ?>" alt="User Image">
             </div>
             <div class="user-cart__info">
-                <div class="user-cart__name"><?php echo esc_html($current_user->display_name) ?></div>
-                <div class="user-cart__email"><?php echo esc_html($current_user->user_email) ?></div>
-                <div class="user-cart__days-work"><?php echo get_the_author_meta('days_of_work', $current_user->ID); ?><?php _e(' days of work', 'magiz-dash-post'); ?></div>
-                <div class="user-cart__distance-travel"><?php echo get_the_author_meta('distance_traveled', $current_user->ID); ?><?php _e(' km traveled', 'magiz-dash-post'); ?></div>
+                <div class="user-cart__name"><?php echo $user_name; ?></div>
+                <div class="user-cart__email"><?php echo $user_email; ?></div>
+                <div class="user-cart__days-work">
+                    <?php echo $days_of_work; ?>
+                    <?php _e(' days of work', 'magiz-dash-post'); ?>
+                </div>
+                <div class="user-cart__distance-travel">
+                    <?php echo $distance_traveled; ?>
+                    <?php _e(' km traveled', 'magiz-dash-post'); ?>
+                </div>
                 <div class="user-cart__team-scores">
-                <div class="user-cart__team-score user-cart__team-score--a"><?php _e('Team A Score: ', 'magiz-dash-post'); ?><?php echo get_the_author_meta('team_a_score', $current_user->ID); ?></div>
-                <div class="user-cart__team-score user-cart__team-score--b"><?php _e('Team B Score: ', 'magiz-dash-post'); ?><?php echo get_the_author_meta('team_b_score', $current_user->ID); ?></div>
+                    <div class="user-cart__team-score user-cart__team-score--a">
+                        <?php _e('Electronic Team Score: ', 'magiz-dash-post'); ?>
+                        <?php echo $average_electronic_score; ?>
+                    </div>
+                    <div class="user-cart__team-score user-cart__team-score--b">
+                        <?php _e('Mechanic Team Score: ', 'magiz-dash-post'); ?>
+                        <?php echo $average_mechanic_score; ?>
+                    </div>
                 </div>
             </div>
         </div>

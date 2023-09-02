@@ -34,6 +34,7 @@ add_action('plugins_loaded', 'magiz_dash_post_load_textdomain');
 // Include public files
 require_once(MAGIZ_DASH_POST_DIR . 'public/magiz_public_enqueues.php');
 require_once(MAGIZ_DASH_POST_DIR . 'public/magiz_user_dashboard_shortcode.php');
+require_once(MAGIZ_DASH_POST_DIR . 'public/magiz_users_score_shortcode.php');
 
 // Include admin files
 require_once(MAGIZ_DASH_POST_DIR . 'admin/magiz_admin_enqueues.php');

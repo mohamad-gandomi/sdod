@@ -47,15 +47,19 @@ function magiz_custom_user_profile_fields($user) {
             </td>
         </tr>
         <tr>
-            <th><label for="team_a_score"><?php _e('Team A Score', 'magiz-dash-post'); ?></label></th>
+            <th>
+                <label for="electronic_team_score"><?php _e('Electronic Team Score', 'magiz-dash-post'); ?></label>
+            </th>
             <td>
-                <input type="number" name="team_a_score" id="team_a_score" value="<?php echo esc_attr(get_the_author_meta('team_a_score', $user->ID)); ?>" min="0">
+                <?php $electronic_team_score = get_the_author_meta('electronic_team_score', $user->ID) ? array_sum(get_the_author_meta('electronic_team_score', $user->ID)) / count(get_the_author_meta('electronic_team_score', $user->ID)) : '' ; ?>
+                <?php echo $electronic_team_score; ?>
             </td>
         </tr>
         <tr>
-            <th><label for="team_b_score"><?php _e('Team B Score', 'magiz-dash-post'); ?></label></th>
+            <th><label for="mechanic_team_score"><?php _e('Mechanic Team Score', 'magiz-dash-post'); ?></label></th>
             <td>
-                <input type="number" name="team_b_score" id="team_b_score" value="<?php echo esc_attr(get_the_author_meta('team_b_score', $user->ID)); ?>" min="0">
+                <?php $mechanic_team_score = get_the_author_meta('mechanic_team_score', $user->ID) ? array_sum(get_the_author_meta('mechanic_team_score', $user->ID)) / count(get_the_author_meta('mechanic_team_score', $user->ID)) : '' ; ?>
+                <?php echo $mechanic_team_score; ?>
             </td>
         </tr>
     </table>
@@ -81,13 +85,13 @@ function magiz_save_custom_user_profile_fields($user_id) {
     }
 
     // Save Team A score
-    if (isset($_POST['team_a_score'])) {
-        update_user_meta($user_id, 'team_a_score', sanitize_text_field($_POST['team_a_score']));
+    if (isset($_POST['electronic_team_score'])) {
+        update_user_meta($user_id, 'electronic_team_score', sanitize_text_field($_POST['electronic_team_score']));
     }
 
     // Save Team B score
-    if (isset($_POST['team_b_score'])) {
-        update_user_meta($user_id, 'team_b_score', sanitize_text_field($_POST['team_b_score']));
+    if (isset($_POST['mechanic_team_score'])) {
+        update_user_meta($user_id, 'mechanic_team_score', sanitize_text_field($_POST['mechanic_team_score']));
     }
 
     // Save uploaded profile image
