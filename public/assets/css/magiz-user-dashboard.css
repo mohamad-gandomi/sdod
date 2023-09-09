@@ -77,3 +77,24 @@ color: red;
     color: white;
     font-weight: bold;
 }
+
+/* Inputs Style */
+
+.magiz-custom-input {
+    margin: 1.3em 0;
+    direction: ltr;
+}
+
+.magiz-custom-input label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.magiz-custom-input input {
+    padding: 5px 10px;
+    width: 100%;
+    font-size: 24px;
+}
