@@ -27,4 +27,9 @@ jQuery(document).ready(function($) {
         $('#profile_image_preview img').attr('src', 'http://sdod.ir/wp-content/plugins/magiz-dash-post/admin/assets/images/default-profile-image.jpg');
         $('#remove_profile_image_button').hide();
     });
+
+    jalaliDatepicker.startWatch({ 
+        time: true
+    });
+    
 });

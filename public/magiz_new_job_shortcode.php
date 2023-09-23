@@ -19,7 +19,8 @@ function magiz_new_job_shortcode($atts) {
         'dip-hl' => array('label' => __('dip/hl', 'magiz-dash-post'), 'type' => 'text'),
         'last-casing-shoe' => array('label' => __('last casing & shoe', 'magiz-dash-post'), 'type' => 'text'),
         'project-depth' => array('label' => __('project depth', 'magiz-dash-post'), 'type' => 'text'),
-        'start-date-time' => array('label' => __('start date/time', 'magiz-dash-post'), 'type' => 'text'),
+        'start-date-time' => array('label' => __('start date/time', 'magiz-dash-post'), 'type' => 'text', 'jdp' => true),
+        'end-date-time' => array('label' => __('end date/time', 'magiz-dash-post'), 'type' => 'text', 'jdp' => true),
         'start-depth' => array('label' => __('start depth', 'magiz-dash-post'), 'type' => 'text'),
         'end-depth' => array('label' => __('end depth', 'magiz-dash-post'), 'type' => 'text'),
         'target-inc-azi' => array('label' => __('target inc/azi', 'magiz-dash-post'), 'type' => 'text')
@@ -32,12 +33,21 @@ function magiz_new_job_shortcode($atts) {
         <form id="magiz-create-well-post" method="post">
             <?php
             foreach ($fields as $field_name => $field_info) {
+
                 $label = $field_info['label'];
                 $input_type = $field_info['type'];
+                $jdp = !empty($field_info['jdp']) ? $field_info['jdp'] : '';
+
                 ?>
                 <div class="magiz-custom-input">
                     <label for="<?php echo esc_attr($field_name); ?>"><?php echo esc_html($label); ?></label>
-                    <input type="<?php echo esc_attr($input_type); ?>" id="<?php echo esc_attr($field_name); ?>" name="<?php echo esc_attr($field_name); ?>" value="">
+                    <input 
+                        <?php echo $jdp ? 'data-jdp' : ''; ?> 
+                        type="<?php echo esc_attr($input_type); ?>" 
+                        id="<?php echo esc_attr($field_name); ?>" 
+                        name="<?php echo esc_attr($field_name); ?>" 
+                        value=""
+                    >
                 </div>
                 <?php
             }
