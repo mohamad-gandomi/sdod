@@ -102,6 +102,7 @@ function magiz_display_users_shortcode($atts) {
                         </div>
                     </div>
                 </div>
+                <?php if( ! current_user_can( 'administrator' ) ): ?>
                 <form method="post" class="score-form" id="score-form_<?php echo $user_id; ?>">
                     <label for="score_<?php echo $user_id; ?>"><?php _e('Your score: ') ?></label>
                     <select id="score_<?php echo $user_id; ?>" name="score_<?php echo $user_id; ?>">
@@ -112,6 +113,7 @@ function magiz_display_users_shortcode($atts) {
                     </select>
                     <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
                 </form>
+                <?php endif; ?>
             </div>
 
             <script>
