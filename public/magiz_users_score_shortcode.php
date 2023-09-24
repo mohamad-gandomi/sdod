@@ -8,6 +8,13 @@ if (!defined('ABSPATH')) {
 function magiz_display_users_shortcode($atts) {
     ob_start();
 
+    ?>
+    <form method="get" id="user-search-form" action="">
+        <input type="text" id="user-search" name="user-search" value="<?php echo esc_attr($_GET['user-search'] ?? ''); ?>">
+        <input type="submit" value="<?php _e('Search', 'magiz-dash-post'); ?>">
+    </form>
+    <?php
+
     $current_user = wp_get_current_user();
     $current_user_id = $current_user->ID;
     $current_user_role = $current_user->roles[0] ?? '';
@@ -18,12 +25,16 @@ function magiz_display_users_shortcode($atts) {
     // Get the current page number
     $current_page = get_query_var('paged') ? get_query_var('paged') : 1;
 
+    // Get the search term from the URL query parameter
+    $search_term = sanitize_text_field($_GET['user-search'] ?? '');
+
     // Query users with the 'mechanic_engineer' and 'electronic_engineer' role with pagination
     $users_query = new WP_User_Query(array(
         'role__in'   => array('mechanic_engineer', 'electronic_engineer'),
         'number'     => $users_per_page,
         'paged'      => $current_page,
         'exclude'      => array($current_user_id),
+        'search'     => "*$search_term*",
     ));
 
     // Get the total number of users found
@@ -113,14 +124,15 @@ function magiz_display_users_shortcode($atts) {
                     </select>
                     <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
                 </form>
+                <script>
+                    document.getElementById('score_<?php echo $user_id; ?>').addEventListener('change', function() {
+                        document.getElementById('score-form_<?php echo $user_id; ?>').submit();
+                    });
+                </script>
                 <?php endif; ?>
             </div>
 
-            <script>
-                document.getElementById('score_<?php echo $user_id; ?>').addEventListener('change', function() {
-                    document.getElementById('score-form_<?php echo $user_id; ?>').submit();
-                });
-            </script>
+
 
             <?php
         }

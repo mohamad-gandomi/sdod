@@ -98,3 +98,14 @@ color: red;
     width: 100%;
     font-size: 24px;
 }
+
+/* Search form style */
+
+#user-search-form {
+    display: flex;
+    margin-bottom: 1.3em;
+}
+
+#user-search-form input[type='text'] {
+    width: 100%;
+}
