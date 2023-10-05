@@ -79,5 +79,25 @@ function magiz_custom_well_taxonomies() {
         'rewrite' => array('slug' => 'well-tag'),
     );
     register_taxonomy('well-tag', 'well', $tag_args);
+
+    // Add new location taxonomy
+    $location_labels = array(
+        'name' => __('Locations', 'magiz-dash-post'),
+        'singular_name' => __('Location', 'magiz-dash-post'),
+        'search_items' => __('Search Locations', 'magiz-dash-post'),
+        'all_items' => __('All Locations', 'magiz-dash-post'),
+        'edit_item' => __('Edit Location', 'magiz-dash-post'),
+        'update_item' => __('Update Location', 'magiz-dash-post'),
+        'add_new_item' => __('Add New Location', 'magiz-dash-post'),
+        'new_item_name' => __('New Location Name', 'magiz-dash-post'),
+        'menu_name' => __('Locations', 'magiz-dash-post'),
+    );
+    $location_args = array(
+        'hierarchical' => true,
+        'labels' => $location_labels,
+        'show_admin_column' => true,
+        'rewrite' => array('slug' => 'well-location'),
+    );
+    register_taxonomy('well-location', 'well', $location_args);
 }
 add_action('init', 'magiz_custom_well_taxonomies', 0);

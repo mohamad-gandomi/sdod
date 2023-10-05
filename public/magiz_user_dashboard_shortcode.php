@@ -40,6 +40,18 @@ function magiz_current_user_info_shortcode() {
                         <?php echo $average_mechanic_score; ?>
                     </div>
                 </div>
+
+                <!-- Form to report user location -->
+                <form method="post" action="">
+                    <label for="user_reported_location"><?php _e('Report your location:', 'magiz-dash-post'); ?></label>
+                    <select name="user_reported_location" id="user_reported_location">
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                    </select>
+                    <input type="submit" name="submit" value="<?php _e('Send', 'magiz-dash-post'); ?>">
+                </form>
+
             </div>
         </div>
         <?php
