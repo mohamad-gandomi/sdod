@@ -13,6 +13,18 @@ function magiz_current_user_info_shortcode() {
         $distance_traveled = get_the_author_meta('distance_traveled', $user_id) ?: '';
         $average_electronic_score = $electronic_team_score ? array_sum($electronic_team_score) / count($electronic_team_score) : '';
         $average_mechanic_score = $mechanic_team_score ? array_sum($mechanic_team_score) / count($mechanic_team_score) : '';
+
+        // Check if the form is submitted
+        if (isset($_POST['submit'])) {
+            // Get the selected location value from the form
+            $selected_location = sanitize_text_field($_POST['user_reported_location']);
+
+            // Get the current user's ID
+            $user_id = get_current_user_id();
+
+            // Update the user meta with the selected location value
+            update_user_meta($user_id, 'user_reported_location', $selected_location);
+        }
         
         ?>
         <div class="user-cart">
@@ -43,12 +55,29 @@ function magiz_current_user_info_shortcode() {
 
                 <!-- Form to report user location -->
                 <form method="post" action="">
+                <div class="magiz-custom-input">
                     <label for="user_reported_location"><?php _e('Report your location:', 'magiz-dash-post'); ?></label>
                     <select name="user_reported_location" id="user_reported_location">
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
+                        <?php
+                        // Get the terms from the "well-location" custom taxonomy
+                        $terms = get_terms(array(
+                            'taxonomy' => 'well-location',
+                            'hide_empty' => false, // Show even if there are no posts assigned
+                        ));
+
+                        $selected_value = get_the_author_meta('user_reported_location', $user_id);
+
+                        // Loop through the terms and display them as options
+                        foreach ($terms as $term) {
+
+                            $selected = ($term->name === $selected_value) ? 'selected' : '';
+
+                            // Output each term as an option
+                            echo '<option value="' . esc_html($term->name) . '" ' . $selected . '>' . esc_html($term->name) . '</option>';
+                        }
+                        ?>
                     </select>
+                </div>
                     <input type="submit" name="submit" value="<?php _e('Send', 'magiz-dash-post'); ?>">
                 </form>
 

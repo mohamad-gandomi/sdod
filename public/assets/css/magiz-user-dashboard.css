@@ -93,8 +93,9 @@ color: red;
     font-weight: bold;
 }
 
-.magiz-custom-input input {
-    padding: 5px 10px;
+.magiz-custom-input input,
+.magiz-custom-input select {
+    padding: 10px 15px;
     width: 100%;
     font-size: 24px;
 }

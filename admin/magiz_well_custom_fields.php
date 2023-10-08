@@ -24,7 +24,7 @@ function render_well_informations_metabox($post) {
     // Define an array of field names, labels, and input types
     $fields = array(
         'client' => array('label' => __('client', 'magiz-dash-post'), 'type' => 'text'),
-        'field-loc' => array('label' => __('field/loc', 'magiz-dash-post'), 'type' => 'text'),
+        'field-loc' => array('label' => __('Field/Location', 'magiz-dash-post'), 'type' => 'select', 'taxonomy' => 'well-location'),
         'rig-no' => array('label' => __('rig no', 'magiz-dash-post'), 'type' => 'text'),
         'well-no' => array('label' => __('well no', 'magiz-dash-post'), 'type' => 'text'),
         'hole-size' => array('label' => __('hole size', 'magiz-dash-post'), 'type' => 'text'),
@@ -46,18 +46,40 @@ function render_well_informations_metabox($post) {
         $label = $field_info['label'];
         $input_type = $field_info['type'];
         $field_value = get_post_meta($post->ID, $field_name, true);
+        $taxonomy = !empty($field_info['taxonomy']) ? $field_info['taxonomy'] : '';
         $jdp = !empty($field_info['jdp']) ? $field_info['jdp'] : '';
-        
+    
         ?>
         <div class="magiz-custom-input">
             <label for="<?php echo esc_attr($field_name); ?>"><?php echo esc_html($label); ?></label>
-            <input
-                <?php echo $jdp ? 'data-jdp' : ''; ?> 
-                type="<?php echo esc_attr($input_type); ?>" 
-                id="<?php echo esc_attr($field_name); ?>" 
-                name="<?php echo esc_attr($field_name); ?>" 
-                value="<?php echo esc_attr($field_value); ?>"
-            >
+            <?php if ($input_type === 'select' && $taxonomy) : ?>
+                <select
+                    id="<?php echo esc_attr($field_name); ?>"
+                    name="<?php echo esc_attr($field_name); ?>"
+                >
+                    <option value=""><?php _e('Select', 'magiz-dash-post'); ?></option>
+                    <?php
+                    // Get terms from the specified taxonomy
+                    $terms = get_terms(array(
+                        'taxonomy' => $taxonomy,
+                        'hide_empty' => false,
+                    ));
+    
+                    foreach ($terms as $term) {
+                        $selected = selected($term->slug, $field_value, false);
+                        echo "<option value='" . esc_attr($term->slug) . "' $selected>" . esc_html($term->name) . "</option>";
+                    }
+                    ?>
+                </select>
+            <?php else : ?>
+                <input
+                    <?php echo $jdp ? 'data-jdp' : ''; ?>
+                    type="<?php echo esc_attr($input_type); ?>"
+                    id="<?php echo esc_attr($field_name); ?>"
+                    name="<?php echo esc_attr($field_name); ?>"
+                    value="<?php echo esc_attr($field_value); ?>"
+                >
+            <?php endif; ?>
         </div>
         <?php
     }
