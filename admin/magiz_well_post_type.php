@@ -99,5 +99,45 @@ function magiz_custom_well_taxonomies() {
         'rewrite' => array('slug' => 'well-location'),
     );
     register_taxonomy('well-location', 'well', $location_args);
+
+    // Add new system taxonomy
+    $system_labels = array(
+        'name' => __('Systems', 'magiz-dash-post'),
+        'singular_name' => __('System', 'magiz-dash-post'),
+        'search_items' => __('Search Systems', 'magiz-dash-post'),
+        'all_items' => __('All Systems', 'magiz-dash-post'),
+        'edit_item' => __('Edit System', 'magiz-dash-post'),
+        'update_item' => __('Update System', 'magiz-dash-post'),
+        'add_new_item' => __('Add New System', 'magiz-dash-post'),
+        'new_item_name' => __('New System Name', 'magiz-dash-post'),
+        'menu_name' => __('Systems', 'magiz-dash-post'),
+    );
+    $system_args = array(
+        'hierarchical' => true,
+        'labels' => $system_labels,
+        'show_admin_column' => true,
+        'rewrite' => array('slug' => 'well-system'),
+    );
+    register_taxonomy('well-system', 'well', $system_args);
+
+    // Add new system taxonomy
+    $mast_labels = array(
+        'name' => __('Masts', 'magiz-dash-post'),
+        'singular_name' => __('Mast', 'magiz-dash-post'),
+        'search_items' => __('Search Masts', 'magiz-dash-post'),
+        'all_items' => __('All Masts', 'magiz-dash-post'),
+        'edit_item' => __('Edit Mast', 'magiz-dash-post'),
+        'update_item' => __('Update Mast', 'magiz-dash-post'),
+        'add_new_item' => __('Add New Mast', 'magiz-dash-post'),
+        'new_item_name' => __('New Mast Name', 'magiz-dash-post'),
+        'menu_name' => __('Masts', 'magiz-dash-post'),
+    );
+    $mast_args = array(
+        'hierarchical' => true,
+        'labels' => $mast_labels,
+        'show_admin_column' => true,
+        'rewrite' => array('slug' => 'well-mast'),
+    );
+    register_taxonomy('well-mast', 'well', $mast_args);
 }
 add_action('init', 'magiz_custom_well_taxonomies', 0);
