@@ -89,7 +89,7 @@ table, td, th {
 }
 @media (max-width: 991px) {
   .responsive-table__body__text::before {
-    content: attr(data-title) " :";
+    content: attr(data-title) " : ";
   }
 }
 @media (max-width: 400px) {
