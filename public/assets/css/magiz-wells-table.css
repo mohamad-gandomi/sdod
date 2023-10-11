@@ -52,6 +52,17 @@ table, td, th {
 .responsive-table__row td {
   padding: 1rem;
 }
+
+.responsive-table__row td a {
+  display: block;
+  text-decoration: none;
+  background: #f44336;
+  padding: 10px 16px;
+  margin-right: 10px;
+  border-radius: 7px;
+  color: white;
+}
+
 .responsive-table__head {
   background-color: #e1e8f2;
 }
@@ -75,7 +86,7 @@ table, td, th {
 }
 .responsive-table__body .responsive-table__row:hover {
   color: #ffffff;
-  background-color: #fb4f83;
+  background-color: #1e73be;
 }
 .responsive-table__body__text {
   display: flex;

@@ -65,7 +65,15 @@ function magiz_custom_user_profile_fields($user) {
         <tr>
             <th><label for="user_reported_location"><?php _e('User Reported Location', 'magiz-dash-post'); ?></label></th>
             <td>
-                <?php echo esc_attr(get_the_author_meta('user_reported_location', $user->ID)); ?>
+                <?php 
+                    $well_id = get_the_author_meta('user_reported_location', $user->ID);
+                    $locations = get_the_terms($well_id, 'well-location');
+                    if ($locations) {
+                        foreach ($locations as $location) {
+                            echo $location->name . ' ' . get_the_title($well_id);
+                        }
+                    }
+                ?>
             </td>
         </tr>
         <tr>
@@ -73,29 +81,28 @@ function magiz_custom_user_profile_fields($user) {
             <td>
             <select name="user_current_location" id="user_current_location">
             <?php
-                // Get the terms from the "well-location" custom taxonomy
-                $terms = get_terms(array(
-                    'taxonomy' => 'well-location',
-                    'hide_empty' => false, // Show even if there are no posts assigned
-                ));
 
-                // Define the value that you want to be selected
-                $selected_value = get_the_author_meta('user_current_location', $user->ID); // Replace 'desired_value' with the value you want to select
+            // Get all wells
+            $wells = get_posts([
+                'post_type' => 'well',
+            ]);
 
-                // Loop through the terms and display them as options
-                foreach ($terms as $term) {
-                    // Get the term's ID
-                    $term_id = $term->term_id;
+            $selected_value = get_the_author_meta('user_current_location', $user->ID);
 
-                    // Get the custom field "distance_to_tehran" value for each term
-                    $distance_to_tehran = get_term_meta($term_id, 'distance_to_tehran', true);
+            // Loop through the terms and display them as options
+            foreach ($wells as $well) {
 
-                    // Check if this option should be selected
-                    $selected = ($distance_to_tehran === $selected_value) ? 'selected' : '';
-
-                    // Output each term as an option
-                    echo '<option value="' . esc_attr($distance_to_tehran) . '" ' . $selected . '>' . esc_html($term->name) . '</option>';
+                $selected = ($well->ID == $selected_value) ? 'selected' : '';
+                $locations = get_the_terms($well->ID, 'well-location');
+                if ($locations) {
+                    foreach ($locations as $location) {
+                        $post_location = $location->name;
+                    }
                 }
+
+                // Output each term as an option
+                echo '<option value="' . esc_html($well->ID) . '" ' . $selected . '>' . $post_location . ' ' . $well->post_title . '</option>';
+            }
             ?>
             </select>
             </td>
@@ -148,7 +155,15 @@ function magiz_save_custom_user_profile_fields($user_id) {
             update_user_meta($user_id, 'user_current_location', $_POST['user_current_location']);
             
             $current_distance_traveled = isset($_POST['distance_traveled']) ? $_POST['distance_traveled'] : 0;
-            $new_distance_traveled = $current_distance_traveled + ($_POST['user_current_location'] * 2);
+            $well_id = $_POST['user_current_location'];
+            $locations = get_the_terms($well_id, 'well-location');
+            if ($locations) {
+                foreach ($locations as $location) {
+                    // Get the custom term meta value for "distance_to_tehran"
+                    $distance_to_tehran = get_term_meta($location->term_id, 'distance_to_tehran', true);
+                }
+            }
+            $new_distance_traveled = $current_distance_traveled + ($distance_to_tehran * 2);
             update_user_meta($user_id, 'distance_traveled', $new_distance_traveled);
         }
     }

@@ -11,6 +11,9 @@ function magiz_new_job_shortcode($atts) {
     $fields = array(
         'client' => array('label' => __('client', 'magiz-dash-post'), 'type' => 'text'),
         'field-loc' => array('label' => __('Field/Location', 'magiz-dash-post'), 'type' => 'select', 'taxonomy' => 'well-location'),
+        'system' => array('label' => __('System', 'magiz-dash-post'), 'type' => 'select', 'taxonomy' => 'well-system'),
+        'mast-no' => array('label' => __('Mast No', 'magiz-dash-post'), 'type' => 'select', 'taxonomy' => 'well-mast'),
+        'status' => array('label' => __('Status', 'magiz-dash-post'), 'type' => 'select', 'taxonomy' => 'well-status'),
         'rig-no' => array('label' => __('rig no', 'magiz-dash-post'), 'type' => 'text'),
         'well-no' => array('label' => __('well no', 'magiz-dash-post'), 'type' => 'text'),
         'hole-size' => array('label' => __('hole size', 'magiz-dash-post'), 'type' => 'text'),
@@ -56,7 +59,8 @@ function magiz_new_job_shortcode($atts) {
                             ));
             
                             foreach ($terms as $term) {
-                                echo "<option value='" . esc_attr($term->slug) . "'>" . esc_html($term->name) . "</option>";
+                                $term_id = $term->term_id;
+                                echo "<option value='" . esc_attr($term_id) . "'>" . esc_html($term->name) . "</option>";
                             }
                             ?>
                         </select>

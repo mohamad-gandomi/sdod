@@ -24,7 +24,6 @@ function render_well_informations_metabox($post) {
     // Define an array of field names, labels, and input types
     $fields = array(
         'client' => array('label' => __('client', 'magiz-dash-post'), 'type' => 'text'),
-        'field-loc' => array('label' => __('Field/Location', 'magiz-dash-post'), 'type' => 'select', 'taxonomy' => 'well-location'),
         'rig-no' => array('label' => __('rig no', 'magiz-dash-post'), 'type' => 'text'),
         'well-no' => array('label' => __('well no', 'magiz-dash-post'), 'type' => 'text'),
         'hole-size' => array('label' => __('hole size', 'magiz-dash-post'), 'type' => 'text'),
@@ -66,8 +65,9 @@ function render_well_informations_metabox($post) {
                     ));
     
                     foreach ($terms as $term) {
-                        $selected = selected($term->slug, $field_value, false);
-                        echo "<option value='" . esc_attr($term->slug) . "' $selected>" . esc_html($term->name) . "</option>";
+                        $term_id = $term->term_id;
+                        $selected = selected($term_id, $field_value, false);
+                        echo "<option value='" . esc_attr($term_id) . "' $selected>" . esc_html($term->name) . "</option>";
                     }
                     ?>
                 </select>
@@ -93,7 +93,6 @@ function magiz_save_well_field_data($post_id) {
     // Array of custom field names
     $custom_fields = array(
         'client',
-        'field-loc',
         'rig-no',
         'well-no',
         'hole-size',

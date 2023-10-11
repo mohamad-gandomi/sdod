@@ -59,21 +59,27 @@ function magiz_current_user_info_shortcode() {
                     <label for="user_reported_location"><?php _e('Report your location:', 'magiz-dash-post'); ?></label>
                     <select name="user_reported_location" id="user_reported_location">
                         <?php
-                        // Get the terms from the "well-location" custom taxonomy
-                        $terms = get_terms(array(
-                            'taxonomy' => 'well-location',
-                            'hide_empty' => false, // Show even if there are no posts assigned
-                        ));
+
+                        // Get all wells
+                        $wells = get_posts([
+                            'post_type' => 'well',
+                        ]);
 
                         $selected_value = get_the_author_meta('user_reported_location', $user_id);
 
                         // Loop through the terms and display them as options
-                        foreach ($terms as $term) {
+                        foreach ($wells as $well) {
 
-                            $selected = ($term->name === $selected_value) ? 'selected' : '';
+                            $selected = ($well->ID == $selected_value) ? 'selected' : '';
+                            $locations = get_the_terms($well->ID, 'well-location');
+                            if ($locations) {
+                                foreach ($locations as $location) {
+                                    $post_location = $location->name;
+                                }
+                            }
 
                             // Output each term as an option
-                            echo '<option value="' . esc_html($term->name) . '" ' . $selected . '>' . esc_html($term->name) . '</option>';
+                            echo '<option value="' . esc_html($well->ID) . '" ' . $selected . '>' . $post_location . ' ' . $well->post_title . '</option>';
                         }
                         ?>
                     </select>

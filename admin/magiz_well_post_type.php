@@ -120,7 +120,7 @@ function magiz_custom_well_taxonomies() {
     );
     register_taxonomy('well-system', 'well', $system_args);
 
-    // Add new system taxonomy
+    // Add new mast taxonomy
     $mast_labels = array(
         'name' => __('Masts', 'magiz-dash-post'),
         'singular_name' => __('Mast', 'magiz-dash-post'),
@@ -139,5 +139,25 @@ function magiz_custom_well_taxonomies() {
         'rewrite' => array('slug' => 'well-mast'),
     );
     register_taxonomy('well-mast', 'well', $mast_args);
+
+    // Add new status taxonomy
+    $status_labels = array(
+        'name' => __('Statuses', 'magiz-dash-post'),
+        'singular_name' => __('Status', 'magiz-dash-post'),
+        'search_items' => __('Search Statuses', 'magiz-dash-post'),
+        'all_items' => __('All Statuses', 'magiz-dash-post'),
+        'edit_item' => __('Edit Status', 'magiz-dash-post'),
+        'update_item' => __('Update Status', 'magiz-dash-post'),
+        'add_new_item' => __('Add New Status', 'magiz-dash-post'),
+        'new_item_name' => __('New Status Name', 'magiz-dash-post'),
+        'menu_name' => __('Statuses', 'magiz-dash-post'),
+    );
+    $status_args = array(
+        'hierarchical' => true,
+        'labels' => $status_labels,
+        'show_admin_column' => true,
+        'rewrite' => array('slug' => 'well-status'),
+    );
+    register_taxonomy('well-status', 'well', $status_args);
 }
 add_action('init', 'magiz_custom_well_taxonomies', 0);

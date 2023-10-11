@@ -34,15 +34,71 @@ function magiz_wells_shortcode($atts) {
 
             // Loop through the wells and display them in the table
             foreach ($wells as $well) {
+
+                $locations = get_the_terms($well->ID, 'well-location');
+                $systems = get_the_terms($well->ID, 'well-system');
+                $masts = get_the_terms($well->ID, 'well-mast');
+                $statuses = get_the_terms($well->ID, 'well-status');
+
+
                 ?>
                 <tr class="responsive-table__row">
                     <td class="responsive-table__body__text responsive-table__body__text--no"><?php echo $well->ID; ?></td>
-                    <td class="responsive-table__body__text responsive-table__body__text--mastno"><?php echo 1;//get_post_meta($well->ID, 'mast_no', true); ?></td>
-                    <td class="responsive-table__body__text responsive-table__body__text--location"><?php echo get_post_meta($well->ID, 'field-loc', true); ?></td>
-                    <td class="responsive-table__body__text responsive-table__body__text--system"><?php echo 'APS';//get_post_meta($well->ID, 'system', true); ?></td>
-                    <td class="responsive-table__body__text responsive-table__body__text--status"><span class="status-indicator status-indicator--active"></span>Active</td>
-                    <td class="responsive-table__body__text responsive-table__body__text--personle"><?php echo 'ali';//get_post_meta($well->ID, 'personel', true); ?></td>
-                    <td class="responsive-table__body__text responsive-table__body__text--action"><a href="#">link</a></td>
+                    <td class="responsive-table__body__text responsive-table__body__text--mastno">
+                        <?php
+                        if ($masts) {
+                            foreach ($masts as $mast) {
+                                echo $mast->name . ' ';
+                            }
+                        }
+                        ?>
+                    </td>
+                    <td class="responsive-table__body__text responsive-table__body__text--location">
+                        <?php
+                        if ($locations) {
+                            foreach ($locations as $location) {
+                                echo $location->name . ' ';
+                            }
+                        }
+                        ?>
+                    </td>
+                    <td class="responsive-table__body__text responsive-table__body__text--system">
+                        <?php 
+                        if ($systems) {
+                            foreach ($systems as $system) {
+                                echo $system->name . ' ';
+                            }
+                        }
+                        ?>
+                    </td>
+                    <td class="responsive-table__body__text responsive-table__body__text--status">
+                        <?php 
+                        if ($statuses) {
+                            foreach ($statuses as $status) {
+                                echo $status->name . ' ';
+                            }
+                        }
+                        ?>
+                    </td>
+                    <td class="responsive-table__body__text responsive-table__body__text--personle">
+                        <?php
+                            $args = array(
+                                'meta_query' => array(
+                                    array(
+                                        'key'     => 'user_current_location',
+                                        'value'   => $well->ID,
+                                        'compare' => '=',
+                                    ),
+                                ),
+                            );
+                            $users = get_users( $args );
+                            foreach ( $users as $user ) {
+                                // Do something with each user
+                                echo $user->display_name . ' ';
+                            } 
+                        ?>
+                    </td>
+                    <td class="responsive-table__body__text responsive-table__body__text--action"><a href="#"><?php _e('Last Status', 'magiz-dash-post') ?></a></td>
                 </tr>
                 <?php
             }
