@@ -60,7 +60,7 @@ function magiz_new_job_shortcode($atts) {
             
                             foreach ($terms as $term) {
                                 $term_id = $term->term_id;
-                                echo "<option value='" . esc_attr($term_id) . "'>" . esc_html($term->name) . "</option>";
+                                echo "<option value='" . esc_html($term->name) . "'>" . esc_html($term->name) . "</option>";
                             }
                             ?>
                         </select>
@@ -96,9 +96,16 @@ function magiz_new_job_shortcode($atts) {
         
             // Save the additional fields
             foreach ($fields as $field_name => $field_info) {
+
                 if (isset($_POST[$field_name])) {
                     $field_value = sanitize_text_field($_POST[$field_name]);
                     update_post_meta($post_id, $field_name, $field_value);
+                
+                    // Check if the field is a taxonomy field
+                    if (!empty($field_info['taxonomy'])) {
+                        // Set the selected term for the taxonomy
+                        wp_set_object_terms($post_id, $field_value, $field_info['taxonomy']);
+                    }
                 }
             }
         }
